@@ -31,18 +31,24 @@
 							/*Start Valid Parentheses*/
 							$valid_parentheses_string_error = "";
 							$str_array = array();
+							//Check valid parentheses form submit
 							if(isset($_POST['valid_parentheses_submit'])){
 								$valid_string = $_POST['parentheses_string'];
+								//if input not empty
 								if(isset($_POST['parentheses_string']) && empty($_POST['parentheses_string'])){
 									$valid_parentheses_string_error = '<div class="invalid-feedback" style="display:block">Input can not be empty.</div>';
+								//check string characters limit
 								}else if(isset($_POST['parentheses_string']) && strlen($valid_string) < 1 && strlen($valid_string) > 1000000){
 									echo strlen($_POST['parentheses_string']);
-									$valid_parentheses_string_error = '<div class="invalid-feedback" style="display:block">Characters limit less then to 1000000</div>';	
+									$valid_parentheses_string_error = '<div class="invalid-feedback" style="display:block">Characters limit greater then 1 less then to 1000000</div>';
+								//check string only not contains uppercase
 								}else if(isset($_POST['parentheses_string']) && preg_match('/[A-Z]/', $_POST['parentheses_string'])){
 									$valid_parentheses_string_error = '<div class="invalid-feedback" style="display:block">Uppercase characters not acceptable.</div>';
+								//check string not contains number
 								}else if(isset($_POST['parentheses_string']) && preg_match('/[0-9]/', $_POST['parentheses_string'])){
 									$valid_parentheses_string_error = '<div class="invalid-feedback" style="display:block">Numbers not acceptable.</div>';
 								}else{
+									//Split string in array
 									$str_array = str_split($valid_string);
 									$visit = array();
 									for($i=0; $i < strlen($valid_string); $i++){
@@ -90,33 +96,43 @@
 							$huge_sale_sale_items = 0;
 							$huge_sale_prices_items = array();
 							$max_earn_money = 0;
+							//Check huge sale form submit
 							if(isset($_POST['huge_sale_submit'])){
+								//if input not empty
 								if(isset($_POST['carry_items']) && empty($_POST['carry_items'])){
 									$huge_sale_carry_items_error = '<div class="invalid-feedback" style="display:block">No. of items can carry in truck can not be empty.</div>';
+								//check min & max of items
 								}else if(isset($_POST['carry_items']) && $_POST['carry_items'] < 1 && $_POST['carry_items'] > 100){
 									$huge_sale_carry_items_error = '<div class="invalid-feedback" style="display:block">No. of items for carry less then equal to 100 and greater then equal to 1.</div>';
 								}else{
 									$huge_sale_carry_items = $_POST['carry_items'];
 								}
 
+								//if input not empty
 								if(isset($_POST['sale_items']) && empty($_POST['sale_items'])){
 									$huge_sale_sale_items_error = '<div class="invalid-feedback" style="display:block">No. of items for sale can not be empty.</div>';
+								//check min & max of items
 								}else if(isset($_POST['carry_items']) && $_POST['sale_items'] < 1 && $_POST['sale_items'] > 100){
 									$huge_sale_sale_items_error = '<div class="invalid-feedback" style="display:block">No. of items for sales less then equal to 100 and greater then equal to 1.</div>';
 								}else{
 									$huge_sale_sale_items = $_POST['sale_items'];
 								}
 
+								//if input not empty
 								if(isset($_POST['prices_items']) && empty($_POST['prices_items'])){
 									$huge_sale_prices_items_error = '<div class="invalid-feedback" style="display:block">Prices of available items can not be empty.</div>';
 								}else{
 									$huge_sale_prices_items = explode(" ", $_POST['prices_items']);
 									$max_earn_array = array();
+									//check no. of items prices equal to no. of items
 									if(count($huge_sale_prices_items) < $huge_sale_sale_items){
 										$huge_sale_prices_items_error = '<div class="invalid-feedback" style="display:block">No. of prices can not be less then no. of sales items.</div>';
 									}else{
+										//Sort prices in assending
 										sort($huge_sale_prices_items);
+										//Get prices equal to no. of iteam which can carry in truck
 										$max_earn_array = array_slice($huge_sale_prices_items, 0, $huge_sale_carry_items);
+										//Sum prices of items which can carry
 										$max_earn_money = array_sum($max_earn_array);
 									}
 								}
